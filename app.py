@@ -23,14 +23,16 @@ import requests
 app = flask.Flask(__name__,template_folder='templates')
 api = Api(app)
 
-with open(f'finalized_model.sav', 'rb') as f:
-    mod = pickle.load(f)
+mod = pickle.load(open('finalized_model.sav','rb'))
+#with open(f'finalized_model.sav', 'rb') as f:
+#    mod = pickle.load(f)
 
-def import_and_predict(image_url,mod):
+def import_and_predict(image_url):
         a = cv.image(image_url)
         feat = a.getresnet50()
         prediction = mod.predict([feat])
-        return prediction 
+        out_arr = np.array_str(prediction)
+        return {'result':out_arr}
 
 
 @app.route('/',methods = ['POST', 'GET'])
@@ -49,12 +51,18 @@ def main():
                                      original_input={'URL':url},
                                      result=predictioning,
                                      )
+class get_sentiment(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('imageurl',type=str)
+        dictp = parser.parse_args()
+        kw = dictp['imageurl']
+        res = import_and_predict(kw)
+        return res
 
-
-
-
+api.add_resource(get_sentiment, '/get_sentiment')
 if __name__ == '__main__':
-    app.run()
+    app.run()(debug = true)
 #mod = tf.keras.models.load_model('mymod.mod')
 #file = input("Please input url")    
 #image = file
