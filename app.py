@@ -27,7 +27,7 @@ mod = pickle.load(open('finalized_model.sav','rb'))
 #with open(f'finalized_model.sav', 'rb') as f:
 #    mod = pickle.load(f)
 
-def import_and_predict(image_url,mod):
+def import_and_predict(image_url):
         a = cv.image(image_url)
         feat = a.getresnet50()
         prediction = mod.predict([feat])
@@ -45,7 +45,7 @@ def main():
         # Extract the input
         url = flask.request.form['URL']
 
-        predictioning = import_and_predict(url,mod)
+        predictioning = import_and_predict(url)
 
         return flask.render_template('loginurl.html',
                                      original_input={'URL':url},
