@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<style>
+form {
+    margin: auto;
+    width: 35%;
+}
+
+.result {
+    margin: auto;
+    width: 35%;
+    border: 1px solid #ccc;
+}
+</style>
+
+<head>
+    <title>Roasted Coffee Beans predict</title>
+</head>
+<form action="{{ url_for('main') }}" method="POST">
+    <fieldset>
+        <legend>Input values:</legend>
+        url:
+        <input name="URL" type="url" required>
+        <br>
+        <input type="submit">
+    </fieldset>
+</form>
+<br>
+<div class="result" align="center">
+    {% if result %}
+      {% for variable, value in original_input.items() %}
+         <b>{{ variable }}</b> : {{ value }}
+      {% endfor %}
+         <br>
+      <br> Your roasted coffee beans type is:
+         <p style="font-size:50px">{{ result }}</p>
+    {% endif %}
+</div>
+
+</html>
