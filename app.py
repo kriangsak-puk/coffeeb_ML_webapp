@@ -27,7 +27,7 @@ mod = pickle.load(open('finalized_model.sav','rb'))
 #with open(f'finalized_model.sav', 'rb') as f:
 #    mod = pickle.load(f)
 
-def import_and_predict(image_url):
+def import_and_predict(image_url,mod):
         a = cv.image(image_url)
         feat = a.getresnet50()
         prediction = mod.predict([feat])
